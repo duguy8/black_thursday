@@ -74,8 +74,8 @@ class ItemRepoTest < Minitest::Test
                               :merchants => "./data/merchants.csv"
                               })
     ir   = se.items
-    item_1 = ir.create({:name     => "New Item"})
-    assert_equal 263399736, item_1[5].id
+    items = ir.create({:name     => "New Item"})
+    assert_equal 263399736, items[5].id
   end
 
   def test_delete_id
