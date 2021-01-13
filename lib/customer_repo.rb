@@ -1,18 +1,12 @@
+require_relative 'csv_generator'
+
 class CustomerRepo
+  include CsvGenerator
   attr_reader :all
 
   def initialize(csv_data, engine)
     create_customer(csv_data)
     @engine = engine
-  end
-
-  def create_customer(csv_data)
-    customer = CSV.open(csv_data, headers: true,
-    header_converters: :symbol)
-
-    @all = customer.map do |customer|
-      Customer.new(customer, self)
-    end
   end
 
   def find_by_id(id)
@@ -69,6 +63,4 @@ class CustomerRepo
       end
     end
   end
-
-
 end

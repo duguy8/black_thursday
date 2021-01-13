@@ -1,3 +1,4 @@
+require_relative 'mathematics'
 require_relative './sales_engine'
 require_relative './transaction_repo'
 require_relative './transaction'
@@ -13,29 +14,26 @@ require_relative './merchant'
 require_relative './item'
 
 
-class SalesAnalyst
+class SalesAnalyst < SalesEngine
+  include Mathematics
+  attr_reader :merchants,
+              :items,
+              :invoices,
+              :invoice_items,
+              :transactions,
+              :customers
 
-  def initialize(sales_engine)
-    @sales_engine = sales_engine
-  end
-
-  def invoice_total(invoice_id)
-    all_transactions = @sales_engine.transactions.find_all_by_invoice_id(invoice_id)
-
-    successful_transaction = all_transactions.find do |transaction|
-      transaction.result == :success
-    end
-
-    invoice_items = @sales_engine.find_all_invoice_items_for_transaction(successful_transaction.invoice_id)
-
-    total = invoice_items.reduce(0) do |acc, invoice_item|
-      acc + (invoice_item.unit_price_to_dollars * invoice_item.quantity)
-    end
-    BigDecimal(total, 7)
+  def initialize(merchants, items, invoices, invoice_items, transactions, customers)
+    @merchants = merchants
+    @items = items
+    @invoices = invoices
+    @invoice_items = invoice_items
+    @transactions = transactions
+    @customers = customers
   end
 
   def invoice_paid_in_full?(invoice_id)
-    all_transactions = @sales_engine.transactions.find_all_by_invoice_id(invoice_id)
+    all_transactions = @transactions.find_all_by_invoice_id(invoice_id)
 
     all_transactions.any? do |transaction|
       transaction.result == :success
@@ -43,39 +41,39 @@ class SalesAnalyst
   end
 
   def invoice_status(status)
-    @sales_engine.find_invoice_status_percentage(status)
+    find_invoice_status_percentage(status)
   end
 
   def top_days_by_invoice_count
-    @sales_engine.top_day_of_the_week
+    top_day_of_the_week
   end
 
   def bottom_merchants_by_invoice_count
-    @sales_engine.find_bottom_merchants
+    find_bottom_merchants
   end
 
   def top_merchants_by_invoice_count
-    @sales_engine.find_top_merchants
+    find_top_merchants
   end
 
   def average_invoices_per_merchant_standard_deviation
-    @sales_engine.find_invoice_standard_deviation
+    find_invoice_standard_deviation
   end
 
   def average_invoices_per_merchant
-    @sales_engine.find_invoice_averages
+    find_invoice_averages
   end
 
   def average_items_per_merchant
-    @sales_engine.find_average
+    find_average
   end
 
   def average_items_per_merchant_standard_deviation
-    @sales_engine.standard_deviation
+    standard_deviation
   end
 
   def merchants_with_high_item_count
-    @sales_engine.find_merchants_with_most_items
+    find_merchants_with_most_items
   end
 
   def convert_to_list(items)
@@ -84,28 +82,5 @@ class SalesAnalyst
       array
     end
     found
-  end
-
-  def average_item_price_for_merchant(id)
-    items = @sales_engine.find_items_by_id(id)
-    expected = convert_to_list(items).sum(0.0) / convert_to_list(items).size
-    BigDecimal.new(expected, 4)
-  end
-
-  def average_average_price_per_merchant
-    result = @sales_engine.merchants.merchant_list.map do |merchant|
-      average_item_price_for_merchant(merchant.id)
-    end
-    expected = result.sum(0.0) / result.size
-    total_averages = BigDecimal(expected, 5)
-    total_averages.floor(2)
-  end
-
-  def golden_items
-    above_average = (2 * average_average_price_per_merchant) -1
-    expected = @sales_engine.items.item_list.find_all do |item|
-      (item.unit_price_to_dollars / 10) >= above_average
-    end
-    expected
   end
 end

@@ -1,4 +1,7 @@
+require_relative 'csv_generator'
+
 class TransactionRepo
+  include CsvGenerator
   attr_reader :all
 
   def initialize(csv_data, engine)
@@ -8,15 +11,6 @@ class TransactionRepo
 
   def relay_transaction_information(invoice_id)
     @engine.find_all_invoice_items_for_transaction(invoice_id)
-  end
-
-  def create_transactions(csv_data)
-    transaction = CSV.open(csv_data, headers: true,
-    header_converters: :symbol)
-
-    @all = transaction.map do |transaction|
-      Transaction.new(transaction, self)
-    end
   end
 
   def find_by_id(id)

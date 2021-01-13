@@ -92,4 +92,42 @@ module Mathematics
       find_merchant_by_merchant_id(merchant_id)
     end
   end
+
+  def average_item_price_for_merchant(id)
+    items = find_items_by_id(id)
+    expected = convert_to_list(items).sum(0.0) / convert_to_list(items).size
+    BigDecimal.new(expected, 4)
+  end
+
+  def average_average_price_per_merchant
+    result = @merchants.merchant_list.map do |merchant|
+      average_item_price_for_merchant(merchant.id)
+    end
+    expected = result.sum(0.0) / result.size
+    total_averages = BigDecimal(expected, 5).floor(2)
+  end
+
+  def golden_items
+    above_average = (2 * average_average_price_per_merchant) -1
+    expected = @items.item_list.find_all do |item|
+      (item.unit_price_to_dollars / 10) >= above_average
+    end
+    expected
+  end
+
+  def invoice_total(invoice_id)
+    successful_transaction = @transactions.find_all_by_invoice_id(invoice_id).find do |transaction|
+      transaction.result == :success
+    end
+
+    invoice_items = find_all_invoice_items_for_transaction(successful_transaction.invoice_id)
+    calculate_invoice_total(invoice_items)
+  end
+
+  def calculate_invoice_total(invoice_items)
+    total = invoice_items.reduce(0) do |acc, invoice_item|
+      acc + (invoice_item.unit_price_to_dollars * invoice_item.quantity)
+    end
+    BigDecimal(total, 7)
+  end
 end

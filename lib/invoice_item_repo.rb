@@ -1,18 +1,12 @@
+require_relative 'csv_generator'
+
 class InvoiceItemRepo
+  include CsvGenerator
   attr_reader :all
 
   def initialize(csv_data, engine)
     create_invoice_items(csv_data)
     @engine = engine
-  end
-
-  def create_invoice_items(csv_data)
-    invoice_items = CSV.open(csv_data, headers: true,
-    header_converters: :symbol)
-
-    @all = invoice_items.map do |invoice_item|
-      InvoiceItem.new(invoice_item)
-    end
   end
 
   def find_by_id(id)
