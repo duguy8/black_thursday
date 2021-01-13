@@ -45,15 +45,11 @@ class CustomerRepo
   end
 
   def update(id, attributes)
-      customer = find_by_id(id)
       attributes.each_key do |key|
-        case
-        when key == :first_name
-          customer.change_first_name(attributes[:first_name])
-          customer.new_updated_time
-        when key == :last_name
-          customer.change_last_name(attributes[:last_name])
-          customer.new_updated_time
+        if key == :first_name
+          find_by_id(id).change_first_name(attributes[:first_name])
+        elsif key == :last_name
+          find_by_id(id).change_last_name(attributes[:last_name])
         end
     end
 

@@ -20,10 +20,11 @@ class Transaction
 
   def change_result(change)
     @result = change
+    update_time
   end
 
-  def update_time(time)
-    @updated_at = time
+  def update_time
+    @updated_at = Time.now
   end
 
   def find_all_invoice_items_by_invoice_id(invoice_id)

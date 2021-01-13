@@ -16,10 +16,12 @@ class Customer
 
   def change_first_name(change)
     @first_name = change
+    new_updated_time
   end
 
   def change_last_name(change)
     @last_name = change
+    new_updated_time
   end
 
   def new_updated_time

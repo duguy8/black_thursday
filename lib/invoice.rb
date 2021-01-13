@@ -21,12 +21,13 @@ class Invoice
     Date.parse(@attributes[:created_at]).strftime("%A")
   end
 
-  def update_time(time)
-    @updated_at = time
+  def update_time
+    @updated_at = Time.now
   end
 
   def change_status(change)
     @status = change
+    update_time
   end
 
   def merchant
