@@ -1,8 +1,17 @@
 require_relative './sales_engine'
+require_relative './transaction_repo'
+require_relative './transaction'
+require_relative './invoice_repo'
+require_relative './invoice'
+require_relative './customer_repo'
+require_relative './customer'
+require_relative './invoice_item_repo'
+require_relative './invoice_item'
 require_relative './merchant_repo'
 require_relative './item_repo'
 require_relative './merchant'
 require_relative './item'
+
 
 class SalesAnalyst
 
@@ -66,8 +75,8 @@ class SalesAnalyst
       average_item_price_for_merchant(merchant.id)
     end
     expected = result.sum(0.00) / result.size
-    total_averages = BigDecimal(expected, 5).to_s("F")
-    total_averages.to_f.floor(2)
+    total_averages = BigDecimal(expected, 5)
+    total_averages.floor(2)
   end
 
   def golden_items

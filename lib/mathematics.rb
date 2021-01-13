@@ -47,11 +47,11 @@ module Mathematics
   end
 
   def find_merchants_with_most_items
-    merchant_deviation = (find_average + standard_deviation)
+    merchant_deviation = (find_average + (standard_deviation * 2))
 
-    count_merchants_items.select do |key, value|
+    total = count_merchants_items.select do |key, value|
       value >= merchant_deviation
-    end
+    end.flatten
   end
 
   def calculate_highest_invoice_deviation
