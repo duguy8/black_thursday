@@ -66,15 +66,14 @@ class SalesAnalyst
   def average_item_price_for_merchant(id)
     items = @sales_engine.find_items_by_id(id)
     expected = convert_to_list(items).sum(0.0) / convert_to_list(items).size
-    result = BigDecimal(expected, 4)
-    result.div(100, 4)
+    BigDecimal.new(expected, 4)
   end
 
   def average_average_price_per_merchant
     result = @sales_engine.merchants.merchant_list.map do |merchant|
       average_item_price_for_merchant(merchant.id)
     end
-    expected = result.sum(0.00) / result.size
+    expected = result.sum(0.0) / result.size
     total_averages = BigDecimal(expected, 5)
     total_averages.floor(2)
   end
@@ -82,7 +81,7 @@ class SalesAnalyst
   def golden_items
     above_average = (2 * average_average_price_per_merchant) -1
     expected = @sales_engine.items.item_list.find_all do |item|
-      (item.unit_price_to_dollars / 1000.0) >= above_average
+      (item.unit_price_to_dollars / 10) >= above_average
     end
     expected
   end

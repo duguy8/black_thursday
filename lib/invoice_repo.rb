@@ -18,9 +18,16 @@ class InvoiceRepo
 
 
   def update(id, attributes)
-      invoice = find_by_id(id)
-      invoice.change_status(attributes[:status])
-      invoice.update_time(Time.now)
+    invoice = find_by_id(id)
+    attributes.map do |key, value|
+      case
+      when key == :status
+        invoice.change_status(attributes[:status])
+        invoice.update_time(Time.now)
+      when key != :status
+        return nil
+      end
+    end
   end
 
   def max_invoice_id

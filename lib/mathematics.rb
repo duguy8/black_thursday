@@ -47,7 +47,7 @@ module Mathematics
   end
 
   def find_merchants_with_most_items
-    merchant_deviation = (find_average + (standard_deviation * 2))
+    merchant_deviation = find_average + (standard_deviation * 2)
 
     total = count_merchants_items.select do |key, value|
       value >= merchant_deviation

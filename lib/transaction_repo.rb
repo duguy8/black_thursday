@@ -29,7 +29,7 @@ class TransactionRepo
 
   def find_all_by_credit_card_number(number)
     @all.find_all do |transaction|
-      transaction.credit_card_number == number.to_i
+      transaction.credit_card_number == number
     end
   end
 
@@ -60,13 +60,20 @@ class TransactionRepo
 
   def update(id, attributes)
       transaction = find_by_id(id)
-      transaction.change_result(attributes[:result])
-      transaction.update_time(attributes[:updated_at])
+      attributes.map do |key, value|
+        case
+        when key == :result
+          transaction.change_result(attributes[:result])
+          transaction.update_time(Time.now)
+        when key != :result
+          return nil
+      end
+    end
   end
 
   def delete(id)
     @all.reject! do |transaction|
-      transaction.invoice_id == id
+      transaction.id == id
     end
   end
 end
