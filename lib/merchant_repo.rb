@@ -62,7 +62,7 @@ class MerchantRepo
 
 
   def update(id, attributes)
-    attributes.each_key do |key|
+    attributes.map do |key, value|
       if key == :name
         find_by_id(id).change_merchant_name(attributes[:name])
       elsif key != :name

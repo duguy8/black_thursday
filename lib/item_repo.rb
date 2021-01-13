@@ -97,7 +97,7 @@ class ItemRepo
   end
 
   def update(id, attributes)
-      attributes.each_key do |key|
+      attributes.map do |key, value|
         if key == :unit_price
           find_by_id(id).update_unit_price(attributes[:unit_price])
         elsif key != :unit_price

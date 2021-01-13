@@ -57,13 +57,10 @@ class TransactionRepo
   end
 
   def update(id, attributes)
-      transaction = find_by_id(id)
       attributes.map do |key, value|
-        case
-        when key == :result
-          transaction.change_result(attributes[:result])
-          transaction.update_time(Time.now)
-        when key != :result
+        if key == :result
+          find_by_id(id).change_result(attributes[:result])
+        elsif key != :result
           return nil
       end
     end

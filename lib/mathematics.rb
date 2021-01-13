@@ -47,7 +47,7 @@ module Mathematics
   end
 
   def find_merchants_with_most_items
-    merchant_deviation = find_average + (standard_deviation * 2)
+    merchant_deviation = (standard_deviation * 2 + find_average + 1.5).round
 
     total = count_merchants_items.select do |key, value|
       value >= merchant_deviation
@@ -65,7 +65,7 @@ module Mathematics
       value >= deviation
     end
 
-    highest_merchants.map do |merchant_id, invoices|
+    highest_merchants.flat_map do |merchant_id, invoices|
       find_merchant_by_merchant_id(merchant_id)
     end
   end
@@ -87,8 +87,7 @@ module Mathematics
     lowest_merchants = create_invoices_per_merchant_hash.select do |key, value|
       value <= deviation
     end
-
-    lowest_merchants.map do |merchant_id, invoices|
+    lowest_merchants.flat_map do |merchant_id, invoices|
       find_merchant_by_merchant_id(merchant_id)
     end
   end
@@ -96,7 +95,7 @@ module Mathematics
   def average_item_price_for_merchant(id)
     items = find_items_by_id(id)
     expected = convert_to_list(items).sum(0.0) / convert_to_list(items).size
-    BigDecimal.new(expected, 4)
+    BigDecimal(expected, 4)
   end
 
   def average_average_price_per_merchant

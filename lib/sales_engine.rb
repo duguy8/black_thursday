@@ -46,20 +46,18 @@ class SalesEngine
     percentage.round(2)
   end
 
-  def top_day_of_the_week
-    invoice_count = Hash.new(0)
-    the_hash = @invoices.all.reduce(invoice_count) do |acc, invoice|
-      if invoice_count == nil
-        0
-      else
-        acc[invoice.day_created] += 1
-      end
+  def create_invoices_by_day_hash
+    @invoices.all.reduce(Hash.new(0)) do |acc, invoice|
+      acc ||= nil
+      acc[invoice.day_created] += 1
       acc
     end
-    top_day = the_hash.select do |day, invoices_count|
-      invoices_count == the_hash.values.max
-    end
-    top_day.keys
+  end
+
+  def top_day_of_the_week
+    create_invoices_by_day_hash.select do |day, invoices_count|
+      invoices_count == create_invoices_by_day_hash.values.max
+    end.keys
   end
 
   def find_bottom_merchants
@@ -83,7 +81,7 @@ class SalesEngine
   end
 
   def find_merchant_by_merchant_id(id)
-    @merchants.find_by_merchant_id(id)
+    @merchants.find_by_id(id)
   end
 
   def find_items_by_id(id)

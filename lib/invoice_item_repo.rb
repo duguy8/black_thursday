@@ -46,15 +46,11 @@ class InvoiceItemRepo
   end
 
   def update(id, attributes)
-    invoice_item = find_by_id(id)
-    attributes.each_key do |key|
-      case
-      when key == :quantity
-        invoice_item.update_quantity(attributes[:quantity])
-        invoice_item.update_updated_time
-      when key == :unit_price
-        invoice_item.update_unit_price(attributes[:unit_price])
-        invoice.item.update_updated_time
+    attributes.map do |key, value|
+      if key == :quantity
+        find_by_id(id).update_quantity(attributes[:quantity])
+      elsif key == :unit_price
+        find_by_id(id).update_unit_price(attributes[:unit_price])
       end
     end
   end

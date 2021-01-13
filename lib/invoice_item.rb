@@ -23,6 +23,7 @@ class InvoiceItem
 
   def update_quantity(attributes)
     @quantity = attributes
+    update_updated_time
   end
 
   def update_updated_time
@@ -31,5 +32,6 @@ class InvoiceItem
 
   def update_unit_price(attributes)
     @unit_price = attributes
+    update_updated_time
   end
 end
