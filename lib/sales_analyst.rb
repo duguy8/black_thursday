@@ -19,6 +19,22 @@ class SalesAnalyst
     @sales_engine = sales_engine
   end
 
+  def invoice_total(invoice_id)
+    all_invoice_items = @sales_engine.invoice_items.find_all_by_invoice_id(invoice_id)
+
+    all_invoice_items.sum do |invoice_item|
+      invoice_item.unit_price_to_dollars
+    end.round(2)
+  end
+
+  def invoice_paid_in_full?(invoice_id)
+    all_transactions = @sales_engine.transactions.find_all_by_invoice_id(invoice_id)
+
+    all_transactions.any? do |transaction|
+      transaction.result == :success
+    end
+  end
+
   def invoice_status(status)
     @sales_engine.find_invoice_status_percentage(status)
   end
