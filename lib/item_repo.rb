@@ -1,6 +1,7 @@
-require 'csv'
+require_relative 'csv_generator'
 
 class ItemRepo
+  include CsvGenerator
   attr_reader :item_list
 
   def initialize(csv_data, sales_engine)
@@ -10,15 +11,6 @@ class ItemRepo
 
   def find_merchant_by_id(merchant_id)
     @sales_engine.find_merchant_by_merchant_id(merchant_id)
-  end
-
-  def make_items(csv_data)
-    items = CSV.open(csv_data, headers: true,
-    header_converters: :symbol)
-
-    @item_list = items.map do |item|
-      Item.new(item, self)
-    end
   end
 
   def all
@@ -105,14 +97,11 @@ class ItemRepo
   end
 
   def update(id, attributes)
-      found_item = find_by_id(id)
       attributes.each_key do |key|
-        case
-        when key == :unit_price
-        found_item.update_unit_price(attributes[:unit_price])
-        found_item.update
-        when key != :unit_price
-        return nil
+        if key == :unit_price
+          find_by_id(id).update_unit_price(attributes[:unit_price])
+        elsif key != :unit_price
+          return nil
       end
     end
   end

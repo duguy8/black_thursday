@@ -26,13 +26,17 @@ class SalesEngine
 
 
   def initialize(csv_data)
-    routes(csv_data)
+    @merchants = MerchantRepo.new(csv_data[:merchants], self)
+    @items = ItemRepo.new(csv_data[:items], self)
+    @invoices = InvoiceRepo.new(csv_data[:invoices], self)
+    @invoice_items = InvoiceItemRepo.new(csv_data[:invoice_items], self)
+    @transactions = TransactionRepo.new(csv_data[:transactions], self)
+    @customers = CustomerRepo.new(csv_data[:customers], self)
   end
 
   def find_all_invoice_items_for_transaction(invoice_id)
     @invoice_items.find_all_by_invoice_id(invoice_id)
   end
-
 
   def find_invoice_status_percentage(status)
     matched_status = @invoices.all.find_all do |invoice|
@@ -41,7 +45,6 @@ class SalesEngine
     percentage = ((matched_status.count.to_f / @invoices.all.count.to_f) * 100)
     percentage.round(2)
   end
-
 
   def top_day_of_the_week
     invoice_count = Hash.new(0)
@@ -80,68 +83,18 @@ class SalesEngine
   end
 
   def find_merchant_by_merchant_id(id)
-    @merchants.find_by_id(id)
+    @merchants.find_by_merchant_id(id)
   end
 
   def find_items_by_id(id)
-    items.find_all_by_merchant_id(id)
-  end
-
-  def routes(csv_data)
-    csv_data.each_key do |key|
-      case
-      when key == :transactions
-        make_transaction_repo(csv_data)
-      when key == :invoices
-        make_invoice_repo(csv_data)
-      when key == :merchants
-        make_merchant_repo(csv_data)
-      when key == :items
-        make_item_repo(csv_data)
-      when key == :invoice_items
-        make_invoice_items(csv_data)
-      when key == :transactions
-        make_transaction_repo(csv_data)
-      when key == :customers
-        make_customer_repo(csv_data)
-      end
-    end
+    @items.find_all_by_merchant_id(id)
   end
 
   def analyst
-    SalesAnalyst.new(self)
+    SalesAnalyst.new(@merchants, @items, @invoices, @invoice_items, @transactions, @customers)
   end
 
   def self.from_csv(csv_data)
     SalesEngine.new(csv_data)
-  end
-
-
-  def make_invoice_items(csv_data)
-    @invoice_items = InvoiceItemRepo.new(csv_data[:invoice_items], self)
-  end
-
-  def make_transaction_repo(csv_data)
-    @transactions = TransactionRepo.new(csv_data[:transactions], self)
-  end
-
-  def make_invoice_repo(csv_data)
-    @invoices = InvoiceRepo.new(csv_data[:invoices], self)
-  end
-
-  def make_merchant_repo(csv_data)
-    @merchants = MerchantRepo.new(csv_data[:merchants], self)
-  end
-
-  def make_item_repo(csv_data)
-    @items = ItemRepo.new(csv_data[:items], self)
-  end
-
-  def make_transaction_repo(csv_data)
-    @transactions = TransactionRepo.new(csv_data[:transactions], self)
-  end
-
-  def make_customer_repo(csv_data)
-    @customers = CustomerRepo.new(csv_data[:customers], self)
   end
 end
