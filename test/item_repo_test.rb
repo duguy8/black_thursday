@@ -36,25 +36,31 @@ class ItemRepoTest < Minitest::Test
   end
 
   def test_find_all_with_description
-    expected = @ir.find_all_by_description("Gorgeous hand knitted baby bootees")
+    expected = @ir.find_all_with_description("Gorgeous hand knitted baby bootees")
     assert_equal 263399735, expected[0].id
   end
 
   def test_find_all_with_price
-    expected = @ir.find_all_by_price(50000.0)
-    assert_equal 263397919, expected[0].id
+    expected = @ir.find_all_by_price(25)
+    assert_equal 79, expected.length
   end
 
   def test_all_by_price_range
     se = SalesEngine.from_csv({
-                              :items     => "./fixtures/items_sample.csv",
+                              :items     => "./data/items.csv",
                               :merchants => "./data/merchants.csv"
                               })
-    ir   = se.items
+    ir = se.items
 
-    expected = @ir.find_all_by_price_in_range(50000..50100)
+    expected = ir.find_all_by_price_in_range(1000.00..1500.00)
+    expected_sample_2 = ir.find_all_by_price_in_range(10.00..150.00)
+    expected_sample_3 = ir.find_all_by_price_in_range(10.00..15.00)
+    expected_sample_4 = ir.find_all_by_price_in_range(0..10.0)
 
-    assert_equal 263397919, expected[0].id
+    assert_equal 19, expected.length
+    assert_equal 910, expected_sample_2.length
+    assert_equal 205, expected_sample_3.length
+    assert_equal 302, expected_sample_4.length
   end
 
   def test_find_all_by_merchant_id

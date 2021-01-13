@@ -1,4 +1,17 @@
 require_relative 'mathematics'
+require_relative './sales_engine'
+require_relative './merchant_repo'
+require_relative './item_repo'
+require_relative './merchant'
+require_relative './item'
+require_relative './transaction'
+require_relative './transaction_repo'
+require_relative './customer'
+require_relative './customer_repo'
+require_relative './invoice_item'
+require_relative './invoice_item_repo'
+require_relative './invoice'
+require_relative './invoice_repo'
 
 class SalesEngine
   include Math
@@ -32,7 +45,7 @@ class SalesEngine
       if invoice_count == nil
         0
       else
-        acc[invoice.created_at] += 1
+        acc[invoice.day_created] += 1
       end
       acc
     end

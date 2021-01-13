@@ -16,10 +16,31 @@ class Item
     @id = input[:id].to_i
     @name = input[:name]
     @description = input[:description]
-    @unit_price = input[:unit_price]
+    @unit_price = BigDecimal(input[:unit_price]) / 100
     @created_at = input[:created_at]
-    @updated_at = input[:updated_at]
+    @updated_at = Time.now
     @merchant_id = input[:merchant_id]
+  end
+
+  def update
+    t1 = #when we created this
+    t2 = #when we updated thisTime.now
+    t3 = t1 - t2
+    original_time = Time.now
+    # if @updated_at  >= original_time
+    if t1 < t2
+      t3
+    else
+      @updated_at
+    end
+
+    # original_time = Time.now
+    # new_time = #change Time.now
+    # original_time == new_time
+  end
+
+  def update_unit_price(price)
+    @unit_price = price
   end
 
   def unit_price_to_dollars

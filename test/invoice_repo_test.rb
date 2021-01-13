@@ -68,19 +68,17 @@ class InvoiceRepoTest < MiniTest::Test
   end
 
   def test_update_an_invoice
-    skip
+    time = Time.stubs(:now).returns(Time.parse("2011-10-10T14:48:00"))
+    # time.stubs(:day).returns(1)
     attributes = {status: :success,
-                  updated_at: Time.now
+                  updated_at: time
                   }
 
     invoice = @se.invoices.find_by_id(6)
-    @se.invoices.update(6, attributes)    # invoice.stubs(:update_time).returns("at 08:37 AM")
-    assert_equal :success, invoice.status
+    @se.invoices.update(6, attributes)
 
-    time1 = mock("time1")
-    time1.stubs(:now).returns("at 08:37 AM")
-    invoice.update_time(time1)
-    assert_equal ("at 08:37 AM"), invoice.updated_at
+    assert_equal :success, invoice.status
+    assert_equal "11-01-2020", invoice.updated_at
   end
 
   def test_delete_an_invoice

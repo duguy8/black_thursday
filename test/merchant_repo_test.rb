@@ -106,25 +106,34 @@ class MerchantRepoTest < Minitest::Test
   end
 
   def test_it_can_update_merchant_name_attribute
-    se = SalesEngine.from_csv({
-      :items     => "./data/items.csv",
-      :merchants => "./fixtures/merchant_sample.csv",
-      })
-    mr = se.merchants
-    merchant_5 = mr.update(12334160, "Merchant 5")
+    attributes = {
+                  name: "TSSD"
+                  }
 
-    assert_equal "Merchant 5", merchant_5.name
+
+    se = SalesEngine.from_csv({
+                                :items     => "./data/items.csv",
+                                :merchants => "./data/merchants.csv"
+                                })
+    mr = se.merchants
+
+    not_found = "Turing School of Software and Design"
+
+     assert_equal "TSSD",mr.name
+
+     assert_nil not_found
   end
 
   def test_delete_id
     se = SalesEngine.from_csv({
                               :items     => "./data/items.csv",
-                              :merchants => "./fixtures/merchant_sample.csv"
+                              :merchants => "./data/merchants.csv"
                               })
     mr   = se.merchants
 
-    mr.delete_id(12334160)
+    mr.delete(12337412)
+    expected = se.merchants.find_by_id(12337412)
 
-    assert_equal 4, mr.merchant_list.count
+    assert_nil expected
   end
 end
