@@ -29,6 +29,10 @@ class SalesEngine
     routes(csv_data)
   end
 
+  def find_all_invoice_items_for_transaction(invoice_id)
+    @invoice_items.find_all_by_invoice_id(invoice_id)
+  end
+
 
   def find_invoice_status_percentage(status)
     matched_status = @invoices.all.find_all do |invoice|
