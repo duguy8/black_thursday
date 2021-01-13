@@ -25,4 +25,8 @@ class Transaction
   def update_time(time)
     @updated_at = time
   end
+
+  def find_all_invoice_items_by_invoice_id(invoice_id)
+    @repository.relay_transaction_information(@invoice_id)
+  end
 end

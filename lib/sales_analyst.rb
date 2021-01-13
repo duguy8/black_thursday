@@ -20,11 +20,18 @@ class SalesAnalyst
   end
 
   def invoice_total(invoice_id)
-    all_invoice_items = @sales_engine.invoice_items.find_all_by_invoice_id(invoice_id)
+    all_transactions = @sales_engine.transactions.find_all_by_invoice_id(invoice_id)
 
-    all_invoice_items.sum do |invoice_item|
-      invoice_item.unit_price_to_dollars
-    end.round(2)
+    successful_transaction = all_transactions.find do |transaction|
+      transaction.result == :success
+    end
+
+    invoice_items = @sales_engine.find_all_invoice_items_for_transaction(successful_transaction.invoice_id)
+
+    total = invoice_items.reduce(0) do |acc, invoice_item|
+      acc + (invoice_item.unit_price_to_dollars * invoice_item.quantity)
+    end
+    BigDecimal(total, 7)
   end
 
   def invoice_paid_in_full?(invoice_id)
