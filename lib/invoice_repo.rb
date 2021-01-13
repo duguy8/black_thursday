@@ -20,7 +20,7 @@ class InvoiceRepo
   def update(id, attributes)
       invoice = find_by_id(id)
       invoice.change_status(attributes[:status])
-      invoice.update_time(attributes[:updated_at])
+      invoice.update_time(Time.now)
   end
 
   def max_invoice_id

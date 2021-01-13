@@ -70,13 +70,18 @@ class MerchantRepo
   end
 
   def update(id, attributes)
-    merchant = @merchant_list.find do |merchant|
-      merchant.id == id
-      merchant.name.replace(attributes)
+    merchant = find_by_id(id)
+    attributes.each_key do |key|
+      case
+      when key == :name
+        merchant.change_merchant_name(attributes[:name])
+      when key != :name
+        return nil
+      end
     end
   end
 
-  def delete_id(id)
+  def delete(id)
     @merchant_list.reject! do |merchant|
       merchant.id == id
     end

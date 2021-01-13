@@ -45,7 +45,7 @@ class ItemRepo
     end
   end
 
-  def find_all_by_description(description)
+  def find_all_with_description(description)
     description = description.downcase
 
     return [] if description.nil?
@@ -65,11 +65,10 @@ class ItemRepo
 
   def find_all_by_price_in_range(range)
     return [] if range.nil?
-
-    range_array = range.to_a
+    range_array = range.to_s
     @item_list.find_all do |item|
-      (item.unit_price_to_dollars >= range_array.min) &&
-      (item.unit_price_to_dollars <= range_array.max)
+      (item.unit_price_to_dollars >= range_array.split.first.to_f) &&
+      (item.unit_price_to_dollars <= range_array.split("..").last.to_f)
     end
   end
 
@@ -91,24 +90,30 @@ class ItemRepo
     item_list.push(Item.new({
                                       id: max_item_id.to_i + 1,
                                       name: attributes[:name],
-                                      description: [:description],
-                                      unit_price: [:unit_price],
-                                      merchant_id: [:merchant_id],
-                                      created_at: DateTime.now,
-                                      updated_at: DateTime.now
+                                      description: attributes[:description],
+                                      unit_price: attributes[:unit_price],
+                                      merchant_id: attributes[:merchant_id],
+                                      created_at: Time.now,
+                                      updated_at: Time.now
                                     }, self))
   end
 
-  def delete_id(id)
+  def delete(id)
     @item_list.reject! do |item|
       item.id == id
     end
   end
 
   def update(id, attributes)
-    found_item = @item_list.find do |item|
-      item.id. == id
-      item.name.replace(attributes)
+      found_item = find_by_id(id)
+      attributes.each_key do |key|
+        case
+        when key == :unit_price
+        found_item.update_unit_price(attributes[:unit_price])
+        found_item.update
+        when key != :unit_price
+        return nil
+      end
     end
   end
 end

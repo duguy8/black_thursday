@@ -12,12 +12,12 @@ class Invoice
     @customer_id = attributes[:customer_id].to_i
     @merchant_id = attributes[:merchant_id].to_i
     @status = attributes[:status].to_sym
-    @created_at = day_created(attributes[:created_at])
+    @created_at = attributes[:created_at]
     @updated_at = attributes[:updated_at]
   end
 
-  def day_created(created_at)
-    Date.parse(created_at).strftime("%A")
+  def day_created
+    Date.parse(@created_at).strftime("%A")
   end
 
   def update_time(time)
