@@ -26,13 +26,41 @@ class SalesEngine
 
 
   def initialize(csv_data)
-    @merchants = MerchantRepo.new(csv_data[:merchants], self)
-    @items = ItemRepo.new(csv_data[:items], self)
-    @invoices = InvoiceRepo.new(csv_data[:invoices], self)
-    @invoice_items = InvoiceItemRepo.new(csv_data[:invoice_items], self)
-    @transactions = TransactionRepo.new(csv_data[:transactions], self)
-    @customers = CustomerRepo.new(csv_data[:customers], self)
+    routes1(csv_data)
+    routes2(csv_data)
+    routes3(csv_data)
   end
+
+  def routes1(csv_data)
+    csv_data.each_key do |key|
+      if key == :items
+        @items = ItemRepo.new(csv_data[:items], self)
+      elsif key == :merchants
+        @merchants = MerchantRepo.new(csv_data[:merchants], self)
+      end
+    end
+  end
+
+  def routes2(csv_data)
+    csv_data.each_key do |key|
+      if key == :invoices
+        @invoices = InvoiceRepo.new(csv_data[:invoices], self)
+      elsif key == :invoice_items
+        @invoice_items = InvoiceItemRepo.new(csv_data[:invoice_items], self)
+      end
+    end
+  end
+
+  def routes3(csv_data)
+    csv_data.each_key do |key|
+      if key == :transactions
+        @transactions = TransactionRepo.new(csv_data[:transactions], self)
+      elsif key == :customers
+        @customers = CustomerRepo.new(csv_data[:customers], self)
+      end
+    end
+  end
+
 
   def find_all_invoice_items_for_transaction(invoice_id)
     @invoice_items.find_all_by_invoice_id(invoice_id)

@@ -14,7 +14,6 @@ class InvoiceRepoTest < MiniTest::Test
     @se = SalesEngine.from_csv({
                               :invoices => "./data/invoices.csv"
                               })
-    # @invoices = @se.invoices
   end
 
   def test_it_exists
@@ -69,16 +68,15 @@ class InvoiceRepoTest < MiniTest::Test
 
   def test_update_an_invoice
     time = Time.stubs(:now).returns(Time.parse("2011-10-10T14:48:00"))
-    # time.stubs(:day).returns(1)
     attributes = {status: :success,
                   updated_at: time
                   }
 
     invoice = @se.invoices.find_by_id(6)
     @se.invoices.update(6, attributes)
-
+    expected = Time.parse("2011-10-10T14:48:00 -0400")
     assert_equal :success, invoice.status
-    assert_equal "11-01-2020", invoice.updated_at
+    assert_equal expected, invoice.updated_at
   end
 
   def test_delete_an_invoice
