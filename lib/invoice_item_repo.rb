@@ -35,14 +35,14 @@ class InvoiceItemRepo
 
   def create(attributes)
     @all.push(InvoiceItem.new({
-                          id: max_invoice_item_id + 1,
-                          item_id:  attributes[:item_id],
-                          invoice_id:  attributes[:invoice_id],
-                          quantity: attributes[:quantity],
-                          unit_price:  attributes[:unit_price],
-                          created_at:  Time.now,
-                          updated_at:  Time.now
-                          }))
+                                id: max_invoice_item_id + 1,
+                                item_id:  attributes[:item_id],
+                                invoice_id:  attributes[:invoice_id],
+                                quantity: attributes[:quantity],
+                                unit_price:  attributes[:unit_price],
+                                created_at:  Time.now,
+                                updated_at:  Time.now
+                              }))
   end
 
   def update(id, attributes)

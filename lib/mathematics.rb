@@ -19,7 +19,6 @@ module Mathematics
     sum = count_merchants.sum do |value|
       ((value - find_average)**2)
     end
-
     result = (sum / (@merchants.merchant_list.count.to_f - 1))
     Math.sqrt(result).round(2)
   end
@@ -65,7 +64,6 @@ module Mathematics
     highest_merchants = create_invoices_per_merchant_hash.select do |key, value|
       value >= deviation
     end
-
     highest_merchants.flat_map do |merchant_id, invoices|
       find_merchant_by_merchant_id(merchant_id)
     end
@@ -80,7 +78,7 @@ module Mathematics
 
   def calculate_invoice_lowest_deviation
     invoice_lowest_deviation = (find_invoice_per_merchant_average -
-      (standard_deviation_for_merchant_invoices * 2))
+    (standard_deviation_for_merchant_invoices * 2))
   end
 
   def find_bottoms_merchants_by_invoice_count

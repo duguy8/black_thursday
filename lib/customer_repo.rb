@@ -40,7 +40,7 @@ class CustomerRepo
                             last_name: attributes[:last_name],
                             created_at: Time.now,
                             updated_at: Time.now
-                          }, self))
+                           }, self))
 
   end
 

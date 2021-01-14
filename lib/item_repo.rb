@@ -80,14 +80,14 @@ class ItemRepo
 
   def create(attributes)
     item_list.push(Item.new({
-                                      id: max_item_id.to_i + 1,
-                                      name: attributes[:name],
-                                      description: attributes[:description],
-                                      unit_price: attributes[:unit_price],
-                                      merchant_id: attributes[:merchant_id],
-                                      created_at: Time.now,
-                                      updated_at: Time.now
-                                    }, self))
+                              id: max_item_id.to_i + 1,
+                              name: attributes[:name],
+                              description: attributes[:description],
+                              unit_price: attributes[:unit_price],
+                              merchant_id: attributes[:merchant_id],
+                              created_at: Time.now,
+                              updated_at: Time.now
+                            }, self))
   end
 
   def delete(id)

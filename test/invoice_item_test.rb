@@ -14,12 +14,12 @@ require './lib/item_repo'
 class InvoiceItemTest < MiniTest::Test
   def test_it_exists
     i = InvoiceItem.new({
-                        :id         => 2345,
-                        :item_id    => 263562118,
-                        :invoice_id => 522,
-                        :unit_price => BigDecimal("847.87"),
-                        :created_at => Time.now,
-                        :updated_at => Time.now
+                          :id         => 2345,
+                          :item_id    => 263562118,
+                          :invoice_id => 522,
+                          :unit_price => BigDecimal("847.87"),
+                          :created_at => Time.now,
+                          :updated_at => Time.now
                         })
 
     assert_instance_of InvoiceItem, i
@@ -27,12 +27,12 @@ class InvoiceItemTest < MiniTest::Test
 
   def test_it_has_attributes
     i = InvoiceItem.new({
-                        :id         => 2345,
-                        :item_id    => 263562118,
-                        :invoice_id => 522,
-                        :unit_price => BigDecimal("847.87"),
-                        :created_at => Time.now,
-                        :updated_at => Time.now
+                          :id         => 2345,
+                          :item_id    => 263562118,
+                          :invoice_id => 522,
+                          :unit_price => BigDecimal("847.87"),
+                          :created_at => Time.now,
+                          :updated_at => Time.now
                         })
 
     assert_equal 2345, i.id
