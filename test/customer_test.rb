@@ -14,7 +14,6 @@ require './lib/customer'
 require './lib/customer_repo'
 
 class CustomerTest < MiniTest::Test
-
   def test_it_exists
     se = SalesEngine.from_csv({:customer => "./data/customer.csv"})
     c = Customer.new({

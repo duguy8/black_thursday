@@ -45,14 +45,14 @@ class TransactionRepo
 
   def create(attributes)
     @all.push(Transaction.new({
-                            id: max_transaction_id + 1,
-                            invoice_id: attributes[:invoice_id],
-                            credit_card_number: attributes[:credit_card_number],
-                            credit_card_expiration_date: attributes[:credit_card_expiration_date],
-                            result: attributes[:result],
-                            created_at: Time.now,
-                            updated_at: Time.now
-                          }, self))
+                                id: max_transaction_id + 1,
+                                invoice_id: attributes[:invoice_id],
+                                credit_card_number: attributes[:credit_card_number],
+                                credit_card_expiration_date: attributes[:credit_card_expiration_date],
+                                result: attributes[:result],
+                                created_at: Time.now,
+                                updated_at: Time.now
+                              }, self))
 
   end
 

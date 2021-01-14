@@ -57,9 +57,8 @@ class MerchantRepo
                                       name: attributes[:name],
                                       created_at: Time.now,
                                       updated_at: Time.now
-                                    }, self))
+                                     }, self))
   end
-
 
   def update(id, attributes)
     attributes.map do |key, value|

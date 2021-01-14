@@ -10,16 +10,15 @@ require './lib/item'
 require './lib/item_repo'
 
 class InvoiceTest < MiniTest::Test
-
   def test_it_exists
     se = SalesEngine.from_csv({:invoices => "./data/invoices.csv"})
     i = Invoice.new({
-                    :id          => 6,
-                    :customer_id => 7,
-                    :merchant_id => 8,
-                    :status      => "pending",
-                    :created_at  => Time.now,
-                    :updated_at  => Time.now,
+                      :id          => 6,
+                      :customer_id => 7,
+                      :merchant_id => 8,
+                      :status      => "pending",
+                      :created_at  => Time.now,
+                      :updated_at  => Time.now
                     })
     assert_instance_of Invoice, i
   end
@@ -27,12 +26,12 @@ class InvoiceTest < MiniTest::Test
   def test_invoice_attributes
     se = SalesEngine.from_csv({:invoices => "./data/invoices.csv"})
     i = Invoice.new({
-                    :id          => 6,
-                    :customer_id => 7,
-                    :merchant_id => 8,
-                    :status      => "pending",
-                    :created_at  => Time.now,
-                    :updated_at  => Time.now,
+                      :id          => 6,
+                      :customer_id => 7,
+                      :merchant_id => 8,
+                      :status      => "pending",
+                      :created_at  => Time.now,
+                      :updated_at  => Time.now
                     })
     expected = se.invoices.find_by_id(3452)
     assert_equal 3452, expected.id

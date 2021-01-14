@@ -66,12 +66,8 @@ class SalesEngine
     @invoice_items.find_all_by_invoice_id(invoice_id)
   end
 
-  def find_invoice_status_percentage(status)
-    matched_status = @invoices.all.find_all do |invoice|
-      invoice.status == status
-    end
-    percentage = ((matched_status.count.to_f / @invoices.all.count.to_f) * 100)
-    percentage.round(2)
+  def find_status_of_invoice_percentage
+    find_invoice_status_percentage(status)
   end
 
   def create_invoices_by_day_hash

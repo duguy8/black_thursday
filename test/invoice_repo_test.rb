@@ -12,15 +12,14 @@ require './lib/item_repo'
 class InvoiceRepoTest < MiniTest::Test
   def setup
     @se = SalesEngine.from_csv({
-                              :invoices => "./data/invoices.csv"
+                                :invoices => "./data/invoices.csv"
                               })
   end
 
   def test_it_exists
     @se = SalesEngine.from_csv({
-                              :invoices => "./data/invoices.csv"
+                                :invoices => "./data/invoices.csv"
                               })
-
     assert_instance_of InvoiceRepo, @se.invoices
   end
 
@@ -59,7 +58,7 @@ class InvoiceRepoTest < MiniTest::Test
                     :merchant_id => 8,
                     :status      => "pending",
                     :created_at  => Time.now,
-                    :updated_at  => Time.now,
+                    :updated_at  => Time.now
                   }
     @se.invoices.create(attributes)
     expected = @se.invoices.find_by_id(4986)
@@ -68,9 +67,10 @@ class InvoiceRepoTest < MiniTest::Test
 
   def test_update_an_invoice
     time = Time.stubs(:now).returns(Time.parse("2011-10-10T14:48:00"))
-    attributes = {status: :success,
+    attributes = {
+                  status: :success,
                   updated_at: time
-                  }
+                 }
 
     invoice = @se.invoices.find_by_id(6)
     @se.invoices.update(6, attributes)

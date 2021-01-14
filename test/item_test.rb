@@ -7,7 +7,6 @@ require './lib/item_repo'
 require './lib/item'
 
 class ItemTest < Minitest::Test
-
   def test_item_exists
     i = Item.new({
                   :id          => 1,
@@ -17,7 +16,7 @@ class ItemTest < Minitest::Test
                   :created_at  => Time.now,
                   :updated_at  => Time.now,
                   :merchant_id => 2
-                  })
+                })
 
     assert_instance_of Item, i
   end
@@ -31,7 +30,7 @@ class ItemTest < Minitest::Test
                   :created_at  => Time.now,
                   :updated_at  => Time.now,
                   :merchant_id => 2
-                  })
+                })
 
     assert_equal 1, i.id
     assert_equal "Pencil", i.name
@@ -52,7 +51,7 @@ class ItemTest < Minitest::Test
                   :created_at  => Time.now,
                   :updated_at  => Time.now,
                   :merchant_id => 2
-                  })
+                })
 
     assert_equal 10.99, i.unit_price_to_dollars
   end

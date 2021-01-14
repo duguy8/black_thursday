@@ -15,10 +15,9 @@ require './lib/customer_repo'
 
 
 class CustomerRepoTest < MiniTest::Test
-
   def setup
     @se = SalesEngine.from_csv({
-                              :customers => "./data/customers.csv"
+                                :customers => "./data/customers.csv"
                               })
     @customer = @se.customers
   end
@@ -35,7 +34,6 @@ class CustomerRepoTest < MiniTest::Test
   def test_customer_repo_can_find_by_id
     expected = @customer.find_by_id(100)
     expect_nil = @customer.find_by_id(000)
-
     assert_equal 100, expected.id
     assert_equal Customer, expected.class
     assert_nil expect_nil
@@ -44,7 +42,6 @@ class CustomerRepoTest < MiniTest::Test
   def test_customer_repo_can_find_by_first_name
     expected = @customer.find_all_by_first_name("oe")
     expect_nil = @customer.find_all_by_first_name("000")
-
     assert_equal 8, expected.length
     assert_equal Customer, expected.first.class
     assert_equal [], expect_nil
@@ -53,7 +50,6 @@ class CustomerRepoTest < MiniTest::Test
   def test_customer_repo_can_find_by_last_name
     expected = @customer.find_all_by_last_name("On")
     expect_nil = @customer.find_all_by_last_name("000")
-
     assert_equal 85, expected.length
     assert_equal Customer, expected.first.class
     assert_equal [], expect_nil
@@ -65,7 +61,7 @@ class CustomerRepoTest < MiniTest::Test
                 :last_name => "Clarke",
                 :created_at => Time.now,
                 :updated_at => Time.now
-              }
+               }
   @se.customers.create(attributes)
   expected = @se.customers.find_by_id(1001)
   assert_equal "Joan", expected.first_name
@@ -73,8 +69,8 @@ class CustomerRepoTest < MiniTest::Test
 
   def test_update_customer_attributes
     attributes = {
-      last_name: "Smith"
-    }
+                  last_name: "Smith"
+                 }
     @se.customers.update(100, attributes)
     expected = @se.customers.find_by_id(100)
     assert_equal "Smith", expected.last_name
